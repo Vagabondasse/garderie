@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Petits Trésors - Garderie</title>
+    
+    <!-- 
+    EXPLICATION POUR L'APPRENTISSAGE:
+    Le <head> contient toutes les informations "invisibles" de la page:
+    - meta charset: permet d'afficher les accents français correctement
+    - viewport: rend le site responsive (adapté aux téléphones)
+    - title: le titre qui apparaît dans l'onglet du navigateur
+    -->
+    
+    <style>
+        /* 
+        ============================================
+        SECTION CSS - LA MISE EN FORME DU SITE
+        ============================================
+        Le CSS (Cascading Style Sheets) contrôle l'apparence visuelle.
+        Chaque "sélecteur" (comme body, .hero, etc.) cible des éléments HTML
+        et leur applique des styles (couleurs, tailles, positions, etc.)
+        */
+        
+        /* RESET ET CONFIGURATION DE BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* box-sizing: border-box permet de calculer les tailles 
+               en incluant les bordures et padding - plus intuitif! */
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            /* Une belle palette de polices modernes et lisibles */
+        }
+        
+        /* NAVIGATION - LA BARRE EN HAUT */
+        nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            /* linear-gradient crée un dégradé de couleur - très moderne! */
+            padding: 1rem 0;
+            position: sticky; /* La nav reste visible en scrollant */
+            top: 0;
+            z-index: 1000; /* z-index contrôle la superposition des éléments */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* flexbox: un système puissant pour aligner les éléments */
+        }
+        
+        nav h1 {
+            color: white;
+            font-size: 1.8rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem; /* gap crée l'espace entre les éléments flex */
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            /* transition rend les changements fluides (animations) */
+        }
+        
+        nav a:hover {
+            transform: translateY(-2px);
+            text-shadow: 0 2px 8px rgba(255,255,255,0.3);
+            /* :hover s'active quand la souris passe sur l'élément */
+        }
+        
+        /* SECTION HERO - L'EN-TÊTE PRINCIPAL */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden; /* Cache les débordements pour les animations */
+        }
+        
+        /* Animation de bulles flottantes en arrière-plan */
+        .hero::before {
+            content: '🎈';
+            font-size: 4rem;
+            position: absolute;
+            top: 20%;
+            left: 10%;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.3;
+        }
+        
+        .hero::after {
+            content: '⭐';
+            font-size: 3rem;
+            position: absolute;
+            top: 60%;
+            right: 15%;
+            animation: float 8s ease-in-out infinite;
+            opacity: 0.3;
+        }
+        
+        /* DÉFINITION DE L'ANIMATION */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            /* @keyframes définit les étapes d'une animation */
+        }
+        
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s ease;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .btn {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        /* CONTENEUR GÉNÉRAL */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            /* Cette classe centre le contenu et limite sa largeur */
+        }
+        
+        /* SECTIONS DU SITE */
+        section {
+            padding: 4rem 2rem;
+        }
+        
+        section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #667eea;
+        }
+        
+        /* GRILLE DE CARTES POUR LES SERVICES */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            /* grid: système de mise en page en grille 
+               auto-fit: s'adapte automatiquement au nombre d'éléments
+               minmax: définit une taille min et max pour chaque carte */
+            gap: 2rem;
+        }
+        
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        /* SECTION INFO */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .info-box h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        /* SECTION CONTACT */
+        .contact-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .contact-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .contact-item-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* FOOTER - PIED DE PAGE */
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+        
+        /* RESPONSIVE DESIGN - ADAPTATION MOBILE */
+        @media (max-width: 768px) {
+            /* @media permet d'appliquer des styles selon la taille d'écran
+               Ici: écrans de moins de 768px (téléphones) */
+            
+            nav .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            section h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+    ============================================
+    STRUCTURE HTML - LE CONTENU DU SITE
+    ============================================
+    HTML structure le contenu avec des "balises" (<tag></tag>)
+    Chaque balise a un rôle sémantique (nav=navigation, section=section, etc.)
+    -->
+    
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="container">
+            <h1>🌟 Les Petits Trésors</h1>
+            <ul>
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#info">Informations</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- SECTION HERO (En-tête principal) -->
+    <div class="hero" id="accueil">
+        <h2>Bienvenue à Les Petits Trésors</h2>
+        <p>Un environnement chaleureux et sécuritaire pour l'épanouissement de vos enfants</p>
+        <a href="#contact" class="btn">Contactez-nous</a>
+    </div>
+    
+    <!-- SECTION SERVICES -->
+    <section id="services">
+        <div class="container">
+            <h2>Nos Services</h2>
+            <div class="cards">
+                <!-- Chaque "card" représente un service de la garderie -->
+                <div class="card">
+                    <div class="card-icon">🎨</div>
+                    <h3>Activités Créatives</h3>
+                    <p>Éveil artistique avec peinture, dessin, bricolage et activités manuelles adaptées à chaque âge.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">📚</div>
+                    <h3>Apprentissage Ludique</h3>
+                    <p>Développement cognitif par le jeu, la lecture et des activités éducatives stimulantes.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🏃</div>
+                    <h3>Activités Physiques</h3>
+                    <p>Motricité et développement physique avec jeux extérieurs et activités sportives adaptées.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🍎</div>
+                    <h3>Repas Équilibrés</h3>
+                    <p>Menu nutritif et varié préparé sur place, adapté aux besoins alimentaires de chaque enfant.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">👥</div>
+                    <h3>Socialisation</h3>
+                    <p>Développement des compétences sociales dans un environnement bienveillant et encadré.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🛡️</div>
+                    <h3>Sécurité Maximale</h3>
+                    <p>Personnel qualifié, locaux sécurisés et protocoles stricts pour la tranquillité d'esprit des parents.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- SECTION INFORMATIONS PRATIQUES -->
+    <section id="info" style="background-color: #f8f9fa;">
+        <div class="container">
+            <h2>Informations Pratiques</h2>
+            <div class="info-grid">
+                <div class="info-box">
+                    <h3>👶 Âges Acceptés</h3>
+                    <p>De 6 mois à 5 ans</p>
+                </div>
+                
+                <div class="info-box">
+                    <h3>🕐 Horaires</h3>
+                    <p>Lundi au Vendredi<br>6h00 - 17h30</p>
+                </div>
+                
+                <div class="info-box">
+                    <h3>👨‍👩‍👧 Capacité</h3>
+                    <p>Groupes restreints<br>Ratio éducateur/enfant optimal</p>
+                </div>
+                
+                <div class="info-box">
+                    <h3>💰 Tarif</h3>
+                    <p>9$ par jour</p>
+                </div>
+                
+                <div class="info-box">
+                    <h3>✅ Permis</h3>
+                    <p>Garderie permise et inspectée</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- SECTION CONTACT -->
+    <section id="contact">
+        <div class="container">
+            <h2>Nous Contacter</h2>
+            <div class="contact-content">
+                <p style="text-align: center; font-size: 1.2rem; margin-bottom: 2rem;">
+                    N'hésitez pas à nous contacter pour une visite ou pour plus d'informations!
+                </p>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-item-icon">📍</div>
+                        <h3>Adresse</h3>
+                        <p>5850 Avenue de Westbury<br>Montréal, QC<br>Côte-des-Neiges–Notre-Dame-de-Grâce</p>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-item-icon">📞</div>
+                        <h3>Téléphone</h3>
+                        <p>(514) 618-9909</p>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-item-icon">✉️</div>
+                        <h3>Email</h3>
+                        <p>info@petitstrésors.ca</p>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-item-icon">💰</div>
+                        <h3>Tarif</h3>
+                        <p>9$ par jour</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FOOTER (Pied de page) -->
+    <footer>
+        <p>&copy; 2025 Les Petits Trésors - Tous droits réservés</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+            Créé avec ❤️ pour l'apprentissage de la programmation
+        </p>
+    </footer>
+    
+    <!-- 
+    ============================================
+    JAVASCRIPT - L'INTERACTIVITÉ
+    ============================================
+    JavaScript rend le site interactif et dynamique
+    Il permet de réagir aux actions de l'utilisateur
+    -->
+    <script>
+        // DÉFILEMENT FLUIDE VERS LES SECTIONS
+        // Quand on clique sur un lien de navigation, on scroll doucement vers la section
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            // querySelectorAll trouve tous les liens qui commencent par #
+            // forEach exécute une fonction pour chaque élément trouvé
+            
+            anchor.addEventListener('click', function (e) {
+                // addEventListener "écoute" un événement (ici: un clic)
+                
+                e.preventDefault(); // Empêche le comportement par défaut du lien
+                
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    // scrollIntoView fait défiler la page vers l'élément
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth', // Défilement fluide au lieu de instantané
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // ANIMATION AU DÉFILEMENT
+        // Les cartes apparaissent avec une animation quand on scroll jusqu'à elles
+        const observerOptions = {
+            threshold: 0.1, // L'animation se déclenche quand 10% de l'élément est visible
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            // IntersectionObserver détecte quand un élément entre dans le viewport
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // isIntersecting = true quand l'élément est visible
+                    entry.target.style.opacity = '0';
+                    entry.target.style.transform = 'translateY(30px)';
+                    
+                    // setTimeout retarde l'exécution d'une fonction
+                    setTimeout(() => {
+                        entry.target.style.transition = 'all 0.6s ease';
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, 100);
+                    
+                    observer.unobserve(entry.target); // On arrête d'observer après l'animation
+                }
+            });
+        }, observerOptions);
+        
+        // On observe toutes les cartes
+        document.querySelectorAll('.card').forEach(card => {
+            observer.observe(card);
+        });
+        
+        // MESSAGE DE CONSOLE POUR L'APPRENTISSAGE
+        console.log('🎓 Bienvenue dans le code de la garderie!');
+        console.log('💡 Ouvre les outils de développement (F12) pour explorer le code.');
+        console.log('📚 N\'hésite pas à modifier les couleurs, textes et animations pour apprendre!');
+    </script>
+</body>
+</html>
